@@ -1,0 +1,26 @@
+server:
+  port: 8011
+
+---
+
+logging:
+  level:
+    com.ping: debug
+
+
+
+#context.listener.classes=com.ping.wechat.ApplicationEventListener
+---
+
+spring:
+
+  profiles:
+    active: local
+  application:
+    name: wechat
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/mysql_test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123554
+    driver-class-name: com.mysql.cj.jdbc.Driver
