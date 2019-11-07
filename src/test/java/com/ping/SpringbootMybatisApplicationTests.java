@@ -31,11 +31,10 @@ public class SpringbootMybatisApplicationTests {
     @Test
     public void test1() {       //测试查询方法
 //        System.out.println(("----- selectAll method test ------"));
-//        List<Student_HI> list= studentMapperHI.selectList(null);
-        List<Student_HI> list1= studentMapperHI.findAllStudents();
-      /*  list.forEach(item -> System.out.println(item.getId()+item.getName()+item.getTitle()));*/
-        System.out.println(("----- selectAll method test ------"));
-        list1.forEach(item -> System.out.println(item.getId()+item.getName()+item.getTitle()));
+        List<Student_HI> list= studentMapperHI.selectList(null);
+
+     list.forEach(item -> System.out.println(item.getId()+item.getName()+item.getTitle()));
+
         System.out.println(("----- selectAll method test ------"));
       /*  Student_HI student=studentMapperHI.selectById(1);
         System.out.println(student.getId()+student.getName()+student.getTitle());*/
