@@ -1,0 +1,114 @@
+一、Maven 概念：
+Maven是一个java语言编写的开源项目管理工具，是Apache软件基金会的顶级项目。主要用于项目构建，依赖管理
+
+二、Maven目录分析:
+bin：含有mvn运行的脚本
+boot：含有plexus-classworlds类加载器框架
+conf：含有settings.xml配置文件
+lib：含有Maven运行时所需要的java类库
+LICENSE.txt, NOTICE.txt, README.txt针对Maven版本，第三方软件等简要介绍
+
+三、Maven安装:
+1、首先要确保电脑上已经安装了JDK(要jdk 1.6+的版本)，配置好JDK的环境变量，
+    使用如下的两个命令检查检查JDK安装的情况。
+    1 Echo %JAVA_HOME%
+    2 Java -version
+2、对apache-maven-3.2.3-bin.zip进行解压缩
+　　对apache-maven-3.2.3-bin.zip进行解压缩，例如解压到如下目录(解压目录最好不要有中文)
+3、设置系统环境变量：MAVEN_HOME
+4、设置环境变量Path，将%MAVEN_HOME%\bin加入Path中，一定要注意要用分号；与其他值隔开，如下图所示：
+    %MAVEN_HOME%\bin代表的就是"E:\apache-maven-3.2.3\bin"目录
+5、验证Maven安装是否成功
+    打开cmd窗口
+　输入"mvn –v"命令 查看Maven的相关信息：
+6、设置MAVEN_OPTS环境变量(可选配置)
+　　由于Maven命令实际上是执行了Java命令，所以可以通过JAVA命令参数的方式来设置MAVEN运行参数。MAVEN_OPTS环境变量正是用于此用途
+　　MAVEN_OPTS
+   -Xms128m -Xmx512m，分别设置JVM的最小和最大内存，如下图所示：
+
+四、Maven的简单使用
+4.1、Maven项目的目录约定
+MavenProjectRoot(项目根目录)
+      |----src
+      |     |----main
+      |     |         |----java ——存放项目的.java文件
+      |     |         |----resources ——存放项目资源文件，如spring, hibernate配置文件
+      |     |----test
+      |     |         |----java ——存放所有测试.java文件，如JUnit测试类
+      |     |         |----resources ——存放项目资源文件，如spring, hibernate配置文件
+      |----target ——项目输出位置（maven编译完成，生成的文件夹，里面有编译的class文件，使用mvn.clean可以清除编译结果，即删除文件夹）
+      |----pom.xml ----用于标识该项目是一个Maven项目
+4.2、手动创建Maven项目，使用Maven编译
+
+maven基础解析
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion> <!--所有的Maven项目都必须配置这四个配置项-->
+         <groupId>cn.gacl.maven.hello</groupId>    <!--groupId指的是项目名的项目组，默认就是包名-->
+        <!--artifactId指的是项目中的某一个模块，默认命名方式是"项目名-模块名"-->
+        <artifactId>hello-first</artifactId>
+        <version>SNAPSHOT-0.0.1</version>  <!--version指的是版本，这里使用的是Maven的快照版本-->
+    </project>
+
+五、修改从Maven中心仓库下载到本地的jar包的默认存储位置
+　从Maven中心仓库下载到本地的jar包的默认存放在”${user.home}/.m2/repository”中，
+    ${user.home}表示当前登录系统的用户目录(如"C:\Users\gacl")，如下图所示
+ 注：Jar包存放在这个位置不太好，我们希望能够自己定义下载下来的jar包的存放位置，因此我们可以自己设置下载到本地时的jar包的存放目录。
+在“E:\”目录下创建一个“repository”文件夹
+    　　找到apache-maven-3.2.3\conf目录下的settings.xml文件，如下图所示：　　
+    　　编辑setting.xml文件，加上下面的代码：
+    1 <localRepository>E:/repository</localRepository>这样就可以把jar包下载到我们指定的E:/repository目录中
+把jar包下载到本地的好处就是，当编译时，会优先从本地的jar包去找，如果本地存在，就直接拿来用，如果不存在，就从Maven的中心仓库去下载。如下图所示：
+　　第一次执行"mvn compile"和"mvn clean"这两个命令时，Maven会去中央仓库下载需要的jar包，而第二次执行这两个命令时，
+由于所需的jar包已经在本地的仓库中存储，所以就可以直接拿来用了，这样就省去了去中央仓库下载jar包的时间。
+
+六、Maven依赖管理
+前面讲了，Maven最核心的就是对依赖jar包的管理，那么它是通过什么方式来进行管理的呢？
+Maven要求每一个jar包都必须明确定义自己的坐标，Maven就是通过这个坐标来查找管理这些jar包的。
+在Maven中，一个jar包的坐标是由它的groupId、artifactId、version这些元素来定义的。例如：
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-core</artifactId>
+    <version>2.3.8</version>
+    <packaging>jar</packaging>
+groupId：表明其所属组织或公司及其所属项目，命名规则为组织或公司域名反转加项目名称。
+artifactId：项目的模块名，通常与实际项目名称一致。模块的命名通常为项目名前缀加模块名。
+version：当前项目的版本号。
+packaging：定义项目的打包方式，可选值有jar、war、pom。默认为jar
+注：：一个组织或公司都会有很多的项目，而每个项目下都会划分多个模块，在开发中我们可以灵活选择依赖某个模块。而Maven管理的jar包基本都是模块性质的项目构建出的jar包。所以，artifactId通常都是模块名，而不是项目名称。项目名称是和组织名称组合作为groupId来使用的。
+
+Maven的配置文件中dependencies元素包含了所有依赖的jar包，每一个jar包依赖使用dependency元素定义。
+在声明一个jar包依赖时，除了指定groupId、artifactId、version这三项基本坐标外，还可以使用使用以下元素进行配置：
+scope元素：指定依赖的范围
+exclusions元素：排除传递性依赖
+
+Maven有以下几种依赖范围：
+compile：编译依赖范围(默认值），依赖在编译、测试、运行期间都有效。
+test：测试依赖范围，只对测试的classpath有效，在编译或运行时无法使用指定为test的依赖包。
+provided：已提供的依赖范围，只对编译和测试的classpath有效，运行期间不会使用这个依赖。例如servlet-api，在运行时容器已经提供，不需要再重复引入。
+runtime：运行时依赖范围，编译时无效，只在测试和运行时使用这个依赖。
+system：系统依赖范围，和provided范围一致，但是provided是使用容器提供依赖，system是使用系统提供依赖，需要指定依赖文件路径。
+
+传递性依赖：依赖包对其他包的依赖，比如，我们依赖struts2-core，而strtus2-core需要依赖xwork-core、ognl等，
+Maven会将这些传递性依赖同时引入项目之中。这也是Maven的一大优点，简化了我们对jar包依赖的管理。
+而有时我们希望替换某个传递性依赖时，就需要使用exclusions排除掉这个传递性依赖，然后再添加我们自己要替换的依赖包。
+
+
+build中配置maven编译所需要的插件plugin
+ <build>
+        <finalName>demo</finalName> 项目名称
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId> 插件模块名
+                    <version>3.0.0</version> 插件版本
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+
+以上就是Maven的简单入门讲解。
+

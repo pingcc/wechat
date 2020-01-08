@@ -18,17 +18,17 @@ import javax.persistence.Id;
 @TableName("student_db")
 public class Student_HI {
 
-    private long id;//自增id
+    private Integer id;//自增id
     private String name;
     private String title;
 
     @Id
-    @Column(name = "user_id", nullable = false, length = 11)
-    public long getId() {
+    @Column(name = "id", nullable = false, length = 11)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

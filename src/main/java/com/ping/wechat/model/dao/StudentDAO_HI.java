@@ -1,9 +1,8 @@
-package com.ping.wechat.model.dao.readonly;
+package com.ping.wechat.model.dao;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ping.wechat.model.entity.User_HI;
-
+import com.ping.wechat.model.entity.Student_HI;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,13 +14,15 @@ import org.springframework.stereotype.Component;
  */
 
 
+
 /** 如果不配置需要对WechatApplication 进行MapperScan注解
  * @link WechatApplication
  *
  */
 //@Mapper
-@Component("userMapper_HI")
-public interface UserMapper_HI extends BaseMapper<User_HI> {
+@Component("studentDAO_HI")
+public interface StudentDAO_HI extends BaseMapper<Student_HI> {
+
 
 }
 

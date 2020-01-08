@@ -14,6 +14,5 @@ import com.ping.wechat.model.entity.readonly.Student_HI_RO;
 public interface IStudentServer {
 
      Student_HI_RO getIdToStudentParams(JSONObject queryParamJSON);
-     Student_HI_RO getIdToStudent(Long id);
      Student_HI_RO getIdToStudentBody(Student_HI studentHI);
 }

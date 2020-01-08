@@ -1,5 +1,6 @@
 package com.ping;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,9 +22,9 @@ public class JDBCTest {
 
         try {
             // 加载驱动
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             // 获取连接
-            String url = "jdbc:mysql://127.0.0.1:3306/mysql_test";
+            String url = "jdbc:mysql://127.0.0.1:3306/mysql_test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
             String user = "root";
             String password = "123554";
             connection = DriverManager.getConnection(url, user, password);

@@ -7,25 +7,17 @@ import com.ping.wechat.common.ResponseCommonJson;
 import com.ping.wechat.model.entity.Student_HI;
 import com.ping.wechat.model.inter.IStudentServer;
 import com.ping.wechat.model.inter.IUserServer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 /**
  * Created  on 2018/9/21.
@@ -50,14 +42,14 @@ public class CustomerService extends BaseController {
     @GetMapping(value = "/getStudent/{id}")//等价于/get_students/4
     public String getIdToStudent1(@PathVariable("id") Long id) {
         return ResponseCommonJson.returnSuccessResult("操作成功",
-                studentServer.getIdToStudent(id)).toString();
+                studentServer.getIdToStudentParams(new JSONObject().fluentPut("id",id))).toString();
     }
 
     @GetMapping(value = "/getStudent")//等价于/get_students?id=4
     public String getIdToStudent(@RequestParam("id") Long id) {
         try {
             return ResponseCommonJson.returnSuccessResult("操作成功",
-                    studentServer.getIdToStudent(id)).toString();
+                    studentServer.getIdToStudentParams(new JSONObject().fluentPut("id",id))).toString();
         } catch (Exception var) {
             return ResponseCommonJson.returnErrorResult(var.getMessage(),
                     null).toString();

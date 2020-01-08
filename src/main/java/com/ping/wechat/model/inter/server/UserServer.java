@@ -1,6 +1,6 @@
 package com.ping.wechat.model.inter.server;
 
-import com.ping.wechat.model.dao.readonly.UserMapper_HI;
+import com.ping.wechat.model.dao.UserDAO_HI;
 import com.ping.wechat.model.entity.User_HI;
 import com.ping.wechat.model.inter.IUserServer;
 
@@ -19,11 +19,11 @@ import java.util.List;
 @Component("userServer")
 public class UserServer implements IUserServer {
     @Autowired
-    private UserMapper_HI userMapper_hi;
+    private UserDAO_HI userDAO_hi;
 
     @Override
     public List<User_HI> getUserInfo() {
 
-        return userMapper_hi.selectList(null);
+        return userDAO_hi.selectList(null);
     }
 }
