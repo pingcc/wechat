@@ -1,7 +1,6 @@
 package com.ping.wechat.model.dao.readonly;
 
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ping.wechat.model.entity.readonly.Student_HI_RO;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ import java.util.List;
  */
 //@Mapper
 @Component("studentMapper_HI_RO")
-public interface StudentDAO_HI_RO extends BaseMapper<Student_HI_RO> {
+public interface StudentDAO_HI_RO {
     @Select(Student_HI_RO.QUERY)
     List<Student_HI_RO> findAllStudents();
 

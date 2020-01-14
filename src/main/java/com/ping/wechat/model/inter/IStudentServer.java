@@ -2,7 +2,6 @@ package com.ping.wechat.model.inter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ping.wechat.model.entity.Student_HI;
-import com.ping.wechat.model.entity.readonly.Student_HI_RO;
 
 /**
  * Created  on 2019/9/30.
@@ -13,6 +12,6 @@ import com.ping.wechat.model.entity.readonly.Student_HI_RO;
  */
 public interface IStudentServer {
 
-     Student_HI_RO getIdToStudentParams(JSONObject queryParamJSON);
-     Student_HI_RO getIdToStudentBody(Student_HI studentHI);
+     Student_HI getIdToStudentParams(JSONObject queryParamJSON);
+     Student_HI getIdToStudentBody(Student_HI studentHI);
 }

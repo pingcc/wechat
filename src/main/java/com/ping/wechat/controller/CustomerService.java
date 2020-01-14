@@ -7,6 +7,9 @@ import com.ping.wechat.common.ResponseCommonJson;
 import com.ping.wechat.model.entity.Student_HI;
 import com.ping.wechat.model.inter.IStudentServer;
 import com.ping.wechat.model.inter.IUserServer;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,7 @@ import java.util.Map;
  */
 
 
+@Api(tags = "生产者进程API接口")
 @RestController
 @RequestMapping("/customerService")
 public class CustomerService extends BaseController {
@@ -39,12 +43,8 @@ public class CustomerService extends BaseController {
     public IUserServer userServer;
 
 
-    @GetMapping(value = "/getStudent/{id}")//等价于/get_students/4
-    public String getIdToStudent1(@PathVariable("id") Long id) {
-        return ResponseCommonJson.returnSuccessResult("操作成功",
-                studentServer.getIdToStudentParams(new JSONObject().fluentPut("id",id))).toString();
-    }
-
+    @ApiOperation(value="获取学生信息", response = Student_HI.class,httpMethod="Get",produces="application/json")
+    @ApiImplicitParam(name = "id", value = "id", paramType = "query", required = true, dataType = "String")
     @GetMapping(value = "/getStudent")//等价于/get_students?id=4
     public String getIdToStudent(@RequestParam("id") Long id) {
         try {
