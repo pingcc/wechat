@@ -43,7 +43,7 @@ public class CustomerService extends BaseController {
     public IUserServer userServer;
 
 
-    @ApiOperation(value="获取学生信息", response = Student_HI.class,httpMethod="Get",produces="application/json")
+    @ApiOperation(value="获取学生信息", response = Student_HI.class,httpMethod="GET",produces="application/json")
     @ApiImplicitParam(name = "id", value = "id", paramType = "query", required = true, dataType = "String")
     @GetMapping(value = "/getStudent")//等价于/get_students?id=4
     public String getIdToStudent(@RequestParam("id") Long id) {
