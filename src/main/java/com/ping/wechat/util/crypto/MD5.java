@@ -11,11 +11,14 @@ package com.ping.wechat.util.crypto;
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
 //
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+
+import org.apache.commons.codec.binary.Base64;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -24,12 +27,6 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 public class MD5 {
     private static final String HEX_NUMS_STR = "0123456789ABCDEF";
@@ -45,7 +42,8 @@ public class MD5 {
         String myinfo = "我的测试信息";
         System.out.println(myinfo);
         System.out.println(md5Encode(myinfo));
-        String s = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZW1vIiwiaWF0IjoxNTA4ODI5NTIzLCJzdWIiOiJ7XCJiaXJ0aERheVwiOlwiMjQ3NjgwMDAwMDAwXCIsXCJlbWFpbEFkZHJlc3NcIjpcIlwiLFwiZW5jcnlwYXRlZFBhc3N3b3JkXCI6XCI5NkU3OTIxODk2NUVCNzJDOTJBNTQ5REQ1QTMzMDExMlwiLFwibGV2ZWxcIjpcIuazqOWGjOS8muWRmFwiLFwibWVtYmVySWRcIjoyNzIsXCJtbWJOYW1lXCI6XCI3OGJ2RWJsNzdvTngwXCIsXCJtbWJUeXBlXCI6XCJSRUdJU1RFUkVEXCIsXCJtb2JpbGVOdW1iZXJcIjpcIjE4MDc4MTQ1NzkxXCIsXCJzZXhcIjpcIk1hbGVcIixcInRpY2tldFRpbWVcIjpcIjVcIn0iLCJleHAiOjE1MDg4Mjk1ODh9.eEL_ihCHzDd1jfc3B3du2pw5yYBQ4TGinyAzLwKsP_c";
+        String s =
+            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZW1vIiwiaWF0IjoxNTA4ODI5NTIzLCJzdWIiOiJ7XCJiaXJ0aERheVwiOlwiMjQ3NjgwMDAwMDAwXCIsXCJlbWFpbEFkZHJlc3NcIjpcIlwiLFwiZW5jcnlwYXRlZFBhc3N3b3JkXCI6XCI5NkU3OTIxODk2NUVCNzJDOTJBNTQ5REQ1QTMzMDExMlwiLFwibGV2ZWxcIjpcIuazqOWGjOS8muWRmFwiLFwibWVtYmVySWRcIjoyNzIsXCJtbWJOYW1lXCI6XCI3OGJ2RWJsNzdvTngwXCIsXCJtbWJUeXBlXCI6XCJSRUdJU1RFUkVEXCIsXCJtb2JpbGVOdW1iZXJcIjpcIjE4MDc4MTQ1NzkxXCIsXCJzZXhcIjpcIk1hbGVcIixcInRpY2tldFRpbWVcIjpcIjVcIn0iLCJleHAiOjE1MDg4Mjk1ODh9.eEL_ihCHzDd1jfc3B3du2pw5yYBQ4TGinyAzLwKsP_c";
         System.out.println("==========================================");
         byte[] value = compress(s.getBytes());
         System.out.println(new String(value));
@@ -62,9 +60,10 @@ public class MD5 {
         byte[] result = new byte[len];
         char[] hexChars = hex.toCharArray();
 
-        for(int i = 0; i < len; ++i) {
+        for (int i = 0; i < len; ++i) {
             int pos = i * 2;
-            result[i] = (byte)("0123456789ABCDEF".indexOf(hexChars[pos]) << 4 | "0123456789ABCDEF".indexOf(hexChars[pos + 1]));
+            result[i] =
+                (byte)("0123456789ABCDEF".indexOf(hexChars[pos]) << 4 | "0123456789ABCDEF".indexOf(hexChars[pos + 1]));
         }
 
         return result;
@@ -73,7 +72,7 @@ public class MD5 {
     public static String byteToHexString(byte[] b) {
         StringBuffer hexString = new StringBuffer();
 
-        for(int i = 0; i < b.length; ++i) {
+        for (int i = 0; i < b.length; ++i) {
             String hex = Integer.toHexString(b[i] & 255);
             if (hex.length() == 1) {
                 hex = '0' + hex;
@@ -85,7 +84,8 @@ public class MD5 {
         return hexString.toString();
     }
 
-    public static boolean validPassword(String password, String passwordInDb) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static boolean validPassword(String password, String passwordInDb)
+        throws NoSuchAlgorithmException, UnsupportedEncodingException {
         byte[] pwdInDb = hexStringToByte(passwordInDb);
         byte[] salt = new byte[SALT_LENGTH];
         System.arraycopy(pwdInDb, 0, salt, 0, SALT_LENGTH);
@@ -98,7 +98,8 @@ public class MD5 {
         return Arrays.equals(digest, digestInDb);
     }
 
-    public static String getEncryptedPwd(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static String getEncryptedPwd(String password)
+        throws NoSuchAlgorithmException, UnsupportedEncodingException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_LENGTH];
         random.nextBytes(salt);
@@ -127,14 +128,14 @@ public class MD5 {
         char[] charArray = inStr.toCharArray();
         byte[] byteArray = new byte[charArray.length];
 
-        for(int i = 0; i < charArray.length; ++i) {
+        for (int i = 0; i < charArray.length; ++i) {
             byteArray[i] = (byte)charArray[i];
         }
 
         byte[] md5Bytes = md5.digest(byteArray);
         StringBuffer hexValue = new StringBuffer();
 
-        for(int i = 0; i < md5Bytes.length; ++i) {
+        for (int i = 0; i < md5Bytes.length; ++i) {
             int val = md5Bytes[i] & 255;
             if (val < 16) {
                 hexValue.append("0");
@@ -167,7 +168,7 @@ public class MD5 {
         StringBuffer localStringBuffer = new StringBuffer();
         String str = "";
 
-        for(int i = 0; i < paramArrayOfByte.length; ++i) {
+        for (int i = 0; i < paramArrayOfByte.length; ++i) {
             str = Integer.toHexString(paramArrayOfByte[i] & 255);
             if (str.length() == 1) {
                 localStringBuffer.append("0");
@@ -182,7 +183,7 @@ public class MD5 {
     public static String KL(String inStr) {
         char[] a = inStr.toCharArray();
 
-        for(int i = 0; i < a.length; ++i) {
+        for (int i = 0; i < a.length; ++i) {
             a[i] = (char)(a[i] ^ 116);
         }
 
@@ -193,7 +194,7 @@ public class MD5 {
     public static String JM(String inStr) {
         char[] a = inStr.toCharArray();
 
-        for(int i = 0; i < a.length; ++i) {
+        for (int i = 0; i < a.length; ++i) {
             a[i] = (char)(a[i] ^ 116);
         }
 
@@ -218,7 +219,7 @@ public class MD5 {
     private static String byte2hexString(byte[] bytes) {
         StringBuffer bf = new StringBuffer(bytes.length * 2);
 
-        for(int i = 0; i < bytes.length; ++i) {
+        for (int i = 0; i < bytes.length; ++i) {
             if ((bytes[i] & 255) < 16) {
                 bf.append("T0");
             }
@@ -229,26 +230,39 @@ public class MD5 {
         return bf.toString();
     }
 
+    /**
+     * base64 编码 encode
+     *
+     * @param data
+     * @param key
+     * @return
+     * @throws Exception
+     */
     public static String desEncrypt(String data, String key) throws Exception {
         if (key == null) {
-            key = "opeddsaead323353484591dadbc382a18340bf83414536";
+            key = KEY;
         }
-
         byte[] bt = encrypt(data.getBytes(), key.getBytes());
-        String strs = (new BASE64Encoder()).encode(bt);
-        return strs;
+        return Base64.encodeBase64String(bt);
     }
 
+    /**
+     * 解码 decode
+     *
+     * @param data
+     * @param key
+     * @return
+     * @throws IOException
+     * @throws Exception
+     */
     public static String desDecrypt(String data, String key) throws IOException, Exception {
         if (data == null) {
             return null;
         } else {
             if (key == null) {
-                key = "opeddsaead323353484591dadbc382a18340bf83414536";
+                key = KEY;
             }
-
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] buf = decoder.decodeBuffer(data);
+            byte[] buf = Base64.decodeBase64(data);
             byte[] bt = decrypt(buf, key.getBytes());
             return new String(bt);
         }
@@ -285,7 +299,7 @@ public class MD5 {
         try {
             byte[] buf = new byte[1024];
 
-            while(!compresser.finished()) {
+            while (!compresser.finished()) {
                 int i = compresser.deflate(buf);
                 bos.write(buf, 0, i);
             }
@@ -330,7 +344,7 @@ public class MD5 {
         try {
             byte[] buf = new byte[1024];
 
-            while(!decompresser.finished()) {
+            while (!decompresser.finished()) {
                 int i = decompresser.inflate(buf);
                 o.write(buf, 0, i);
             }
@@ -360,7 +374,7 @@ public class MD5 {
             int i = 1024;
             byte[] buf = new byte[i];
 
-            while((i = iis.read(buf, 0, i)) > 0) {
+            while ((i = iis.read(buf, 0, i)) > 0) {
                 o.write(buf, 0, i);
             }
         } catch (IOException var5) {

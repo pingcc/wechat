@@ -5,6 +5,7 @@
 
 package com.ping.wechat.util.crypto;
 
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,7 @@ public class DES {
             if (this.code == 0) {
                 result = new String(retByte, "ISO-8859-1");
             } else if (this.code == 1) {
-                result = Base64.encodeToString(retByte, false);
+                result = Base64.encodeBase64String(retByte);
             } else {
                 result = new String(retByte);
             }
@@ -71,7 +72,7 @@ public class DES {
             if (this.code == 0) {
                 retByte = encrypted.getBytes("ISO-8859-1");
             } else if (this.code == 1) {
-                retByte = Base64.decode(encrypted);
+                retByte = Base64.decodeBase64(encrypted);
             } else {
                 retByte = encrypted.getBytes();
             }

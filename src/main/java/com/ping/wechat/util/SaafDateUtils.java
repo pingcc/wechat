@@ -139,6 +139,10 @@ public class SaafDateUtils {
         return localDateToDate(localDate);
     }
 
+    public static Date string2UtilDate(String dateStr) {
+        return string2UtilDate(dateStr, null);
+    }
+
     /**
      * 字符串转日期类型
      *
@@ -519,14 +523,20 @@ public class SaafDateUtils {
         return c.getTimeInMillis();
     }
 
-    public static void main(String[] args) {
-        Calendar cal = Calendar.getInstance();
+    public static void main(String[] args) throws ParseException {
+        String beginDate = "2015-07-16";//开始时间
+        String endDate = "2016-07-25";//结束时间
+        Set<String> set = yearAndQuarter(beginDate, endDate);
+        set.forEach(item -> {
+            System.out.println(item);
+        });
+      /*  Calendar cal = Calendar.getInstance();
         cal.set(2019, 4, 10);
-        List<Date> monthLastDays = getMonthFirstDays(cal.getTime(), 5);
+        String List<Date> monthLastDays = getMonthFirstDays(cal.getTime(), 5);
         for (int i = 0, size = monthLastDays.size(); i < size; i++) {
             Date date1 = monthLastDays.get(i);
             System.err.println(SaafDateUtils.convertDateToString(date1, date_sdf.get()));
-        }
+        }*/
 
     }
 
