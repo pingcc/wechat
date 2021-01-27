@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-    maven{url 'http://maven.aliyun.com/nexus/content/groups/public'}
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
 }
 
 dependencies {
@@ -34,5 +34,6 @@ dependencies {
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:2.1.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
